@@ -1,0 +1,38 @@
+.word {
+  display: flex;
+}
+
+.guess {
+  display: flex;
+}
+
+.wordLetter {
+  font-size: 2rem;
+  outline: 0.08em solid silver;
+  margin: 0.5em;
+  cursor: default;
+}
+
+.guessLetter {
+    font-size: 2em;
+    outline: 0.08em solid silver;
+    margin: 0.5em;
+    display: flex;
+    cursor: default;
+  }
+  
+.letter.hidden {
+    background: silver;
+  }
+  
+ .letter.justMatched,
+ .letter.justMismatched {
+    outline: 0.1em solid green;
+  }
+.letter.justMismatched {
+    outline-color: red;
+  }
+  
+.letter.visible {
+    cursor: not-allowed;
+  }
