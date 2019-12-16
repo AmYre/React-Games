@@ -1,45 +1,49 @@
 import React, { Component } from 'react'
-import GuessLetters from './GuessLetters'
 import GuessWord from './GuessWord'
 import './Hanged.css'
 
 
 class Hanged extends Component {
 
-    state = {
+	state = {
         wordLetters: ['A','N','T','I','C','O','N','S','T','I','T','U','T','I','O','N','N','E','L','L','E','M','E','N','T'],
-        guessLetters: ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
 		goodLetters: [],
 		guesses: 0,
+		guessedLetter: [],
+		winner : [],
 	}
-
 
     getStatus(letter) {
 
-		const { goodLetters } = this.state
-		
+		const { goodLetters } = this.state	
 		return (goodLetters.includes(letter))  ? 'visible' :  'hidden' 
       
-    }
+	}
+	
+	submittedFom(event) {
 
+		event.preventDefault()
+		
+		const { guesses, goodLetters, wordLetters } = this.state
+		const newGuesses = guesses +1
 
-    handleGuessClick = letter => {
-
-        const { guesses, goodLetters, wordLetters } = this.state
-        const newGuesses = guesses +1
-
-        this.setState({ guesses: newGuesses })
+		this.setState({ guesses: newGuesses })
+		this.setState({ guessedLetter: event.target.value.toUpperCase() })
         
-        if (wordLetters.includes(letter)) {
+        if (wordLetters.includes(event.target.value.toUpperCase())) {
 
-            this.setState({ goodLetters: goodLetters + [letter] })
+            this.setState({ goodLetters: goodLetters + [event.target.value.toUpperCase()] })
         }
- 
-    }
 
+	}
+
+	handleChange(event) {
+		this.setState({ guessedLetter: event.target.value.toUpperCase() })
+	}
+	
 	render() {
 
-		const { wordLetters, guessLetters, guesses, goodLetters } = this.state
+		const { wordLetters, guessedLetter, guesses } = this.state
 
 		return (
 		
@@ -50,23 +54,26 @@ class Hanged extends Component {
 				</div>
 
 				<div className="good-letters">
-					{goodLetters}
+					{guessedLetter}
 				</div>
 
 				<div className="word">
 					{wordLetters.map( (letter, index) => (
-						<GuessWord letter={letter} status={this.getStatus(letter)} index={index} />
+						<GuessWord letter={letter} status={this.getStatus(letter)} key={index} />
 					))}
 				</div>
 
-				<div className="guess">
-					{guessLetters.map( (letter, index) => (
-						<GuessLetters letter={letter} listenClick={this.handleGuessClick} />
-					))}
-				</div>
+				<form className="hanged-form" onInput={(event) => this.submittedFom(event)}>
+
+					<input 
+						onChange={(event) => this.handleChange(event)}
+						value={guessedLetter}
+						placeholder='Votre lettre ici'/>
+
+				</form>
 
 			</div>
-			
+
 		)
 		
 	}
